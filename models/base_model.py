@@ -6,12 +6,13 @@ class ModelTrainer:
     def __init__(self, param_grid):
         self.model = None  # To be set by the subclass
         self.param_grid = param_grid
+        self.grid_search = None
 
     def optimize_hyperparameters(self, x, y):
-        grid_search = (
+        self.grid_search = (
             GridSearchCV(self.model, self.param_grid, cv=10, scoring="accuracy", return_train_score=True, n_jobs=-1))
-        grid_search.fit(x, y)
-        self.model = grid_search.best_estimator_
+        self.grid_search.fit(x, y)
+        self.model = self.grid_search.best_estimator_
 
     def train(self, x, y):
         self.optimize_hyperparameters(x, y)
@@ -19,6 +20,9 @@ class ModelTrainer:
     def predict(self, x, y):
         y_pred = self.model.predict(x)
         return y_pred
+
+    def get_cv_results(self):
+        return self.grid_search.cv_results_
 
     def evaluate_model(self, x_test, y_test):
         y_pred = self.predict(x_test, y_test)

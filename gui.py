@@ -113,6 +113,14 @@ def display_cm(y_test, y_pred, case):
     st.plotly_chart(fig)
 
 
+def display_accuracy_development(cv_results):
+    df = pd.DataFrame(cv_results)
+
+    # Display the results in Streamlit
+    st.write("## Cross-Validation Results")
+    st.table(df)
+
+
 def main():
     dataset_name, model_name = init_sidebar()
 
@@ -130,7 +138,11 @@ def main():
         train_accuracy, train_f1 = model.evaluate_predictions(y_train_pred, y_train)
         test_accuracy, test_f1 = model.evaluate_predictions(y_test_pred, y_test)
 
+        cv_results = model.get_cv_results()
+        display_accuracy_development(cv_results)
+
         display_accuracy(dataset_name, model_name, test_accuracy, test_f1, train_accuracy, train_f1)
+
         display_cm(y_train, y_train_pred, "Train")
         display_cm(y_test, y_test_pred, "Test")
     else:
