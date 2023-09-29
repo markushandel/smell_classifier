@@ -4,16 +4,18 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 import time
 from libs import load_data, preprocess_data, split_data, validate_data
-from models import NaiveBayesModel, RandomForestModel, DecisionTreeModel, SVMModel
-from models.nn_model import NeuralNetworkModel
+from models import NaiveBayesModel, RandomForestModel, DecisionTreeModel, SVMModel, NeuralNetworkModel
 from sklearn.metrics import confusion_matrix
 import plotly.graph_objects as go
+import warnings
 
+warnings.filterwarnings("ignore", "is_categorical_dtype")
+warnings.filterwarnings("ignore", "use_inf_as_na")
 # Map for models
 models = {
-    "NN": NeuralNetworkModel(),
     "Naive Bayes": NaiveBayesModel(),
     "Random Forest": RandomForestModel(),
+    "Self-Trained NN": NeuralNetworkModel(),
     "Decision Tree": DecisionTreeModel(),
     "SVM": SVMModel(),
 }
@@ -77,7 +79,7 @@ def display_accuracy(dataset_name, model_name, test_accuracy, test_f1, train_acc
     st.table(results_df)
 
 
-def display_cm(y_test, y_pred):
+def display_cm(y_test, y_pred, case):
     cm = confusion_matrix(y_test, y_pred)
 
     x = ['Predicted False', 'Predicted True']
@@ -105,7 +107,7 @@ def display_cm(y_test, y_pred):
             )
 
     fig.update_layout(
-        title='Confusion Matrix'
+        title=f'{case} Confusion Matrix'
     )
 
     st.plotly_chart(fig)
@@ -121,11 +123,16 @@ def main():
     if x is not None:
         x_train, x_test, y_train, y_test = split_data(x, y)
         train(model, x_train, y_train, x_test, y_test)
-        train_accuracy, train_f1 = model.evaluate_model(x_train, y_train)
-        test_accuracy, test_f1 = model.evaluate_model(x_test, y_test)
-        y_pred = model.model.predict(x_test)
+
+        y_train_pred = model.predict(x_train, y_train)
+        y_test_pred = model.predict(x_test, y_test)
+
+        train_accuracy, train_f1 = model.evaluate_predictions(y_train_pred, y_train)
+        test_accuracy, test_f1 = model.evaluate_predictions(y_test_pred, y_test)
+
         display_accuracy(dataset_name, model_name, test_accuracy, test_f1, train_accuracy, train_f1)
-        display_cm(y_test, y_pred)
+        display_cm(y_train, y_train_pred, "Train")
+        display_cm(y_test, y_test_pred, "Test")
     else:
         st.error(f"The dataset {dataset_name} is not valid.")
 

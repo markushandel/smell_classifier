@@ -15,9 +15,3 @@ class SVMModel(ModelTrainer):
             param_grid = default_param_grid
         super().__init__(param_grid)
         self.model = SVC()
-
-    # def optimize_hyperparameters(self, x, y):
-    #     random_search = RandomizedSearchCV(self.model, param_distributions=self.param_grid,
-    #                                        n_iter=1, cv=5, scoring='accuracy', n_jobs=-1)
-    #     random_search.fit(x, y)
-    #     self.model = random_search.best_estimator_
