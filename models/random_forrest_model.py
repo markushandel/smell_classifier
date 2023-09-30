@@ -2,10 +2,10 @@ from models.base_model import ModelTrainer
 from sklearn.ensemble import RandomForestClassifier
 
 default_param_grid = {
-    'n_estimators': [10, 50],  # fewer trees
-    'max_depth': [None, 10, 15, 30, 40],  # smaller depth
-    'min_samples_split': [2, 5, 10],  # higher minimum samples per split
-    'min_samples_leaf': [10, 20, 100],  # higher minimum samples per leaf
+    'n_estimators': [10, 50],
+    'max_depth': [None, 10, 15, 30, 40],
+    'min_samples_split': [2, 5, 10],
+    'min_samples_leaf': [10, 20, 100],
 }
 
 

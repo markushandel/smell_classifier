@@ -4,7 +4,7 @@ from sklearn.metrics import accuracy_score, f1_score
 
 class ModelTrainer:
     def __init__(self, param_grid):
-        self.model = None  # To be set by the subclass
+        self.model = None
         self.param_grid = param_grid
         self.grid_search = None
 

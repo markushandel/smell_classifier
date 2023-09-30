@@ -3,7 +3,11 @@ from models.base_model import ModelTrainer
 from sklearn.tree import DecisionTreeClassifier
 
 
-default_param_grid = {'criterion': ['gini', 'entropy'], 'max_depth': np.arange(10, 21), 'min_samples_leaf': [1, 5, 10, 20, 50, 100]}
+default_param_grid = {
+    'criterion': ['gini', 'entropy'],
+    'max_depth': np.arange(10, 21),
+    'min_samples_leaf': [1, 5, 10, 20, 50, 100]
+}
 
 
 class DecisionTreeModel(ModelTrainer):
