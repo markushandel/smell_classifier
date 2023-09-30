@@ -3,7 +3,7 @@ from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 
 
-def preprocess_data(df, strategy="median"):
+def preprocess_data(df, strategy="most_frequent"):
 
     # df.dropna(inplace=True)
     x_copy = df.iloc[:, :-1].copy()

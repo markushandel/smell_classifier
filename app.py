@@ -11,6 +11,7 @@ import warnings
 
 warnings.filterwarnings("ignore", "is_categorical_dtype")
 warnings.filterwarnings("ignore", "use_inf_as_na")
+
 # Map for models
 models = {
     "Naive Bayes": NaiveBayesModel(),
@@ -46,10 +47,7 @@ def train(_model, x_train, y_train, x_test, y_test):
 
 def display_data(dn):
     st.title('Dataset Reviewer')
-    # Convert the uploaded ARFF file to a DataFrame
     df = load_data(f'data/{dn}.arff')
-
-    # Display the DataFrame
     selected_column = st.selectbox('Select a column to visualize', df.columns)
 
     if df[selected_column].dtype == 'object':
@@ -69,7 +67,6 @@ def display_accuracy(dataset_name, model_name, test_accuracy, test_f1, train_acc
     st.write(f"**Dataset:** {dataset_name}")
     st.write(f"**Model:** {model_name}")
 
-    # Displaying results in a table
     results_df = pd.DataFrame({
         "Metric": ["Accuracy", "F1 Score"],
         "Train": [train_accuracy, train_f1],
@@ -113,14 +110,6 @@ def display_cm(y_test, y_pred, case):
     st.plotly_chart(fig)
 
 
-def display_accuracy_development(cv_results):
-    df = pd.DataFrame(cv_results)
-
-    # Display the results in Streamlit
-    st.write("## Cross-Validation Results")
-    st.table(df)
-
-
 def main():
     dataset_name, model_name = init_sidebar()
 
@@ -137,9 +126,6 @@ def main():
 
         train_accuracy, train_f1 = model.evaluate_predictions(y_train_pred, y_train)
         test_accuracy, test_f1 = model.evaluate_predictions(y_test_pred, y_test)
-
-        cv_results = model.get_cv_results()
-        display_accuracy_development(cv_results)
 
         display_accuracy(dataset_name, model_name, test_accuracy, test_f1, train_accuracy, train_f1)
 

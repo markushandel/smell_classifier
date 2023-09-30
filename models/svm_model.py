@@ -1,6 +1,5 @@
 from sklearn.svm import SVC
 from models.base_model import ModelTrainer
-from sklearn.model_selection import RandomizedSearchCV
 
 default_param_grid = {
     'C': [0.1],  # Reduce the number of values

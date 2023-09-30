@@ -3,10 +3,9 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from sklearn.metrics import accuracy_score
-
 from libs import split_data
 from models.base_model import ModelTrainer
-import copy  # Import the copy module
+import copy
 
 
 class SimpleNN(nn.Module):
@@ -30,7 +29,7 @@ class SimpleNN(nn.Module):
 class NeuralNetworkModel(ModelTrainer):
     def __init__(self, param_grid=None):
         super().__init__(param_grid)
-        self.param_grid = param_grid if param_grid else {'epochs': 5000, 'lr': [0.01, 0.001, 0.0001]}
+        self.param_grid = param_grid if param_grid else {'epochs': 4000, 'lr': [0.01, 0.001, 0.0001]}
 
     @staticmethod
     def build_model(input_size, hidden_size, lr, epochs, class_weights):

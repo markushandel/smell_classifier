@@ -9,6 +9,7 @@ class ModelTrainer:
         self.grid_search = None
 
     def optimize_hyperparameters(self, x, y):
+        # Use multithreading by performing grid search in parallel
         self.grid_search = (
             GridSearchCV(self.model, self.param_grid, cv=10, scoring="accuracy", return_train_score=True, n_jobs=-1))
         self.grid_search.fit(x, y)
@@ -21,9 +22,6 @@ class ModelTrainer:
         y_pred = self.model.predict(x)
         return y_pred
 
-    def get_cv_results(self):
-        return self.grid_search.cv_results_
-
     def evaluate_model(self, x_test, y_test):
         y_pred = self.predict(x_test, y_test)
         return self.evaluate_predictions(y_pred, y_test)
@@ -32,5 +30,5 @@ class ModelTrainer:
     def evaluate_predictions(y_pred, y):
         accuracy = accuracy_score(y, y_pred)
         f1 = f1_score(y, y_pred,
-                      average='macro')  # 'macro' computes the F1-score for each label and then takes their average
+                      average='binary')  # 'macro' computes the F1-score for each label and then takes their average
         return accuracy, f1
